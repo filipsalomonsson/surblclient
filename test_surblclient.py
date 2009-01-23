@@ -22,6 +22,25 @@
 # THE SOFTWARE.
 
 import unittest
+from surblclient import surbl
 
 class TestSurblclient(unittest.TestCase):
-    pass
+    def testPass(self):
+        domains = ("google.com", "yahoo.com", "apple.com")
+        for domain in domains:
+            self.assertFalse(domain in surbl)
+            self.assertEquals(surbl.lookup(domain), None)
+
+    def testSurblTestPoints(self):
+        domains = ("test.surbl.org", "surbl-org-permanent-test-point.com")
+        all = ['sc', 'ws', 'ph', 'ob', 'ab', 'jp']
+        for domain in domains:
+            subdomain = "foo.bar.baz." + domain
+            self.assertTrue(domain in surbl)
+            self.assertEquals(surbl.lookup(domain), (domain, all))
+            self.assertTrue(subdomain in surbl)
+            self.assertEquals(surbl.lookup(subdomain), (domain, all))
+
+
+if __name__ == '__main__':
+    unittest.main()

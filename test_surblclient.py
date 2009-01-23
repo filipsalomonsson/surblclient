@@ -22,7 +22,6 @@
 # THE SOFTWARE.
 
 import unittest
-from surblclient import surbl
 
 class TestSurblclient(unittest.TestCase):
     def testPass(self):
@@ -43,4 +42,24 @@ class TestSurblclient(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    import sys
+    try:
+        import coverage
+    except ImportError:
+        coverage = None
+    else:
+        coverage.erase()
+        coverage.start()
+
+    from surblclient import surbl
+
+    loader = unittest.TestLoader()
+    suite = loader.loadTestsFromTestCase(TestSurblclient)
+    unittest.TextTestRunner(sys.stdout, verbosity=2).run(suite)
+
+    if coverage:
+        coverage.stop()
+        print
+        print "Statement coverage:"
+        coverage.report("surblclient.py")
+

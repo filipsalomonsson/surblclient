@@ -64,7 +64,7 @@ class Blacklist:
                 ip = socket.gethostbyname(domain + ".multi.surbl.org")
                 flags = int(ip.split(".")[-1])
             except socket.gaierror, e:
-                if e[0] == socket.EAI_NONAME:
+                if e[0] in (socket.EAI_NONAME, socket.EAI_NODATA):
                     # No record found
                     flags = None
                     self._cache = (domain, flags)

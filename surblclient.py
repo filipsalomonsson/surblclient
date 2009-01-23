@@ -2,7 +2,7 @@
 """SURBL checker (http://www.surbl.org/)
 
 Example usage:
->>> from surbl import surbl
+>>> from surblclient import surbl
 >>> domain = "foo.bar.test.surbl.org"
 >>> domain in surbl
 True

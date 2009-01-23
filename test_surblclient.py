@@ -29,7 +29,7 @@ class TestSurblclient(unittest.TestCase):
         domains = ("google.com", "yahoo.com", "apple.com")
         for domain in domains:
             self.assertFalse(domain in surbl)
-            self.assertEquals(surbl.lookup(domain), None)
+            self.assertFalse(surbl.lookup(domain))
 
     def testSurblTestPoints(self):
         domains = ("test.surbl.org", "surbl-org-permanent-test-point.com")

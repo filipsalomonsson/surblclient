@@ -10,11 +10,12 @@ if version < '2.2.3':
 
 import surblclient
 
-setup(name='Surblclient',
-      version='0.1',
+setup(name="surblclient",
+      version=surblclient.VERSION,
       description="Simple client library for the surbl.org blacklists",
       long_description=surblclient.__doc__,
       author="Filip Salomonsson",
       author_email="filip.salomonsson@gmail.com",
-      py_modules=['surblclient'],
+      url="http://github.com/infixfilip/surblclient/tree/master",
+      py_modules=["surblclient"],
       )

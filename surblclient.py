@@ -38,6 +38,8 @@ import socket
 from urlparse import urlsplit
 import re
 
+VERSION = "0.1"
+
 _flags = ((2, "sc"), (4, "ws"), (8, "ph"), (16, "ob"), (32, "ab"), (64, "jp"))
 
 class Blacklist:

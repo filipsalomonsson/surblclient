@@ -83,7 +83,7 @@ class Blacklist:
         
 
     def lookup(self, domain):
-        """Extract base domain and check it agains SURBL.
+        """Extract base domain and check it against SURBL.
         Return (basedomain, lists) tuple, where basedomain is the
         base domain and lists is a list of strings indicating which
         blacklists the domain was found in.

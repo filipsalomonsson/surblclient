@@ -24,7 +24,7 @@
 import unittest
 
 class TestSurblclient(unittest.TestCase):
-    def testPass(self):
+    def testUriblPass(self):
         domains = ("google.com", "yahoo.com", "apple.com")
         for domain in domains:
             self.assertFalse(domain in surbl)
@@ -40,8 +40,23 @@ class TestSurblclient(unittest.TestCase):
             self.assertTrue(subdomain in surbl)
             self.assertEquals(surbl.lookup(subdomain), (domain, all))
 
+    def testUriblPass(self):
+        domains = ("google.com", "yahoo.com", "apple.com")
+        for domain in domains:
+            self.assertFalse(domain in uribl)
+            self.assertFalse(uribl.lookup(domain))
+
+    def testUriblTestPoints(self):
+        domain = "test.uribl.com"
+        subdomain = "foo.bar.baz." + domain
+        self.assertTrue("test.uribl.com" in uribl)
+        self.assertTrue("foo.bar.baz.test.uribl.com" in uribl)
+        #all = ['sc', 'ws', 'ph', 'ob', 'ab', 'jp']
+        #self.assertEquals(surbl.lookup(domain), (domain, all))
+        #self.assertEquals(surbl.lookup(subdomain), (domain, all))
+
 
 if __name__ == '__main__':
     import sys
-    from surblclient import surbl
+    from surblclient import surbl, uribl
     unittest.main()

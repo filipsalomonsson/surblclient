@@ -228,8 +228,10 @@ _two_level_tlds = re.compile(r"""(?:^|\.)
 |(?:dk)\.org
 |(?:tel)\.no
 |(?:fax|mob|mobil|mobile|tel|tlf)\.nr
-|(?:e164)\.arpa)$
-|(?:surbl)\.org""", re.I | re.X)
+|(?:e164)\.arpa
+|(?:surbl)\.org
+|(?:uribl)\.com)$
+""", re.I | re.X)
 
 surbl = Blacklist("multi.surbl.org")
-
+uribl = Blacklist("multi.uribl.com")

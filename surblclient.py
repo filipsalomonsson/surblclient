@@ -43,8 +43,9 @@ VERSION = "0.1"
 _flags = ((2, "sc"), (4, "ws"), (8, "ph"), (16, "ob"), (32, "ab"), (64, "jp"))
 
 class Blacklist:
-    def __init__(self):
+    def __init__(self, domain):
         self._cache = (None, None)
+        self.domain = domain
 
     def _get_base_domain(self, domain):
         # Remove userinfo
@@ -63,7 +64,7 @@ class Blacklist:
         cached_domain, flags = self._cache
         if cached_domain != domain:
             try:
-                ip = socket.gethostbyname(domain + ".multi.surbl.org")
+                ip = socket.gethostbyname(domain + "." + self.domain)
                 flags = int(ip.split(".")[-1])
             except socket.gaierror, e:
                 if e[0] in (socket.EAI_NONAME, socket.EAI_NODATA):
@@ -230,5 +231,5 @@ _two_level_tlds = re.compile(r"""(?:^|\.)
 |(?:e164)\.arpa)$
 |(?:surbl)\.org""", re.I | re.X)
 
-surbl = Blacklist()
+surbl = Blacklist("multi.surbl.org")
 

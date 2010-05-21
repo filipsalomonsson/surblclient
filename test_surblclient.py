@@ -55,8 +55,23 @@ class TestSurblclient(unittest.TestCase):
         #self.assertEquals(surbl.lookup(domain), (domain, all))
         #self.assertEquals(surbl.lookup(subdomain), (domain, all))
 
+    def testSpamhausPass(self):
+        domains = ("google.com", "yahoo.com", "apple.com")
+        for domain in domains:
+            self.assertFalse(domain in spamhausdbl)
+            self.assertFalse(uribl.lookup(domain))
+
+    def testSpamhausPoints(self):
+        domain = "test.uribl.com"
+        subdomain = "foo.bar.baz." + domain
+        self.assertTrue("dbltest.com" in spamhausdbl)
+        self.assertTrue("foo.bar.baz.dbltest.com" in spamhausdbl)
+        #all = ['sc', 'ws', 'ph', 'ob', 'ab', 'jp']
+        #self.assertEquals(surbl.lookup(domain), (domain, all))
+        #self.assertEquals(surbl.lookup(subdomain), (domain, all))
+
 
 if __name__ == '__main__':
     import sys
-    from surblclient import surbl, uribl
+    from surblclient import surbl, uribl, spamhausdbl
     unittest.main()

@@ -235,3 +235,4 @@ _two_level_tlds = re.compile(r"""(?:^|\.)
 
 surbl = Blacklist("multi.surbl.org")
 uribl = Blacklist("multi.uribl.com")
+spamhausdbl = Blacklist("dbl.spamhaus.org")

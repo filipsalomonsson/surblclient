@@ -10,22 +10,22 @@ True
 ('test.surbl.org', ['sc', 'ws', 'ph', 'ob', 'ab', 'jp'])
 >>> if domain in surbl:
 ...     print "%s blacklisted in %s" % surbl.lookup(domain)
-... 
+...
 test.surbl.org blacklisted in ['sc', 'ws', 'ph', 'ob', 'ab', 'jp']
 """
 
 # Copyright (c) 2009 Filip Salomonsson
-# 
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be included in
 # all copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -35,12 +35,12 @@ test.surbl.org blacklisted in ['sc', 'ws', 'ph', 'ob', 'ab', 'jp']
 # THE SOFTWARE.
 
 import socket
-from urlparse import urlsplit
 import re
 
 VERSION = "0.1"
 
 _flags = ((2, "sc"), (4, "ws"), (8, "ph"), (16, "ob"), (32, "ab"), (64, "jp"))
+
 
 class Blacklist:
     def __init__(self, domain):
@@ -49,12 +49,16 @@ class Blacklist:
 
     def _get_base_domain(self, domain):
         # Remove userinfo
-        if "@" in domain: domain = domain[domain.index("@")+1:]
+        if "@" in domain:
+            domain = domain[domain.index("@")+1:]
         # Remove port
-        if ":" in domain: domain = domain[:domain.index(":")]
+        if ":" in domain:
+            domain = domain[:domain.index(":")]
         # Choose the right "depth"...
-        if _two_level_tlds.search(domain): n = 3
-        else: n = 2
+        if _two_level_tlds.search(domain):
+            n = 3
+        else:
+            n = 2
         return ".".join(domain.split(".")[-n:])
 
     def _lookup_exact(self, domain):
@@ -66,7 +70,7 @@ class Blacklist:
             try:
                 ip = socket.gethostbyname(domain + "." + self.domain)
                 flags = int(ip.split(".")[-1])
-            except socket.gaierror, e:
+            except socket.gaierror as e:
                 if e[0] in (socket.EAI_NONAME, socket.EAI_NODATA):
                     # No record found
                     flags = None
@@ -75,7 +79,7 @@ class Blacklist:
                 else:
                     # Unhandled error, pass test for now
                     return None
-            except:
+            except Exception:
                 # Not sure if this can happen. Timeouts?
                 return None
             self._cache = (domain, flags)
@@ -83,7 +87,6 @@ class Blacklist:
             return (domain, [s for (n, s) in _flags if flags & n])
         else:
             return False
-        
 
     def lookup(self, domain):
         """Extract base domain and check it against SURBL.
@@ -101,7 +104,8 @@ class Blacklist:
         False otherwise.
         """
         return bool(self.lookup(domain))
-        
+
+
 _two_level_tlds = re.compile(r"""(?:^|\.)
 (?:(?:com|edu|gov|net|mil|org)\.ac
 |(?:com|net|org|gov|ac|co|sch|pro)\.ae

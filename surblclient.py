@@ -45,7 +45,7 @@ _flags = ((2, "sc"), (4, "ws"), (8, "ph"), (16, "ob"), (32, "ab"), (64, "jp"))
 class Blacklist:
     def __init__(self, domain):
         self._cache = (None, None)
-        self.domain = domain
+        self.domain = domain.rstrip(".") + "."
 
     def _get_base_domain(self, domain):
         # Remove userinfo

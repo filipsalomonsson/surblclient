@@ -13,6 +13,7 @@ setup(name="surblclient",
       py_modules=["surblclient"],
       install_requires=[
         "importlib-resources",
+        "mock",
       ],
       include_package_data=True,
       )

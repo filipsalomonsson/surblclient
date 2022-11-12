@@ -23,6 +23,8 @@
 
 import unittest
 
+import mock
+
 from surblclient import surbl  # , uribl, spamhausdbl
 
 
@@ -62,6 +64,12 @@ class TestSurblclientTestCase(unittest.TestCase):
         result = surbl.lookup("127.0.0.2")
         self.assertEqual(result[0], "127.0.0.2")
         self.assertEqual(result[1], ["ph", "mw", "abuse", "cr"])
+
+    def test_client_blocked(self):
+        with mock.patch("socket.gethostbyname", return_value="127.0.0.1"):
+            self.assertNotIn("somedomain.tld", surbl)
+            result = surbl.lookup("somedomain.tld")
+        self.assertIsNone(result)
 
     # def test_uribl_pass(self):
     #     domains = ("google.com", "yahoo.com", "apple.com")

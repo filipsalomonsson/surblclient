@@ -60,6 +60,9 @@ class Blacklist:
                 return None
             self._cache = (domain, flags)
         if flags:
+            if flags & 1:
+                # Blocked from making queries
+                return None
             return (domain, [s for (n, s) in self.flags if flags & n])
         else:
             return False

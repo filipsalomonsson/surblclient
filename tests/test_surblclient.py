@@ -1,7 +1,7 @@
 #!/usr/bin/env python
-"""Test suite for surblclient.py"""
+"""Test suite for surblclient"""
 
-# Copyright (c) 2009 Filip Salomonsson
+# Copyright (c) 2022 Filip Salomonsson
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -23,16 +23,18 @@
 
 import unittest
 
+from surblclient import surbl  #, uribl, spamhausdbl
 
-class TestSurblclient(unittest.TestCase):
-    def testSurblPass(self):
-        domains = ("google.com", "yahoo.com", "apple.com")
+
+class TestSurblclientTestCase(unittest.TestCase):
+    def test_surbl_pass(self):
+        domains = ["google.com", "yahoo.com", "apple.com"]
         for domain in domains:
             self.assertFalse(domain in surbl)
             self.assertFalse(surbl.lookup(domain))
 
-    def testSurblTestPoints(self):
-        lists = ['sc', 'ws', 'ph', 'ob', 'ab', 'jp']
+    def test_surbl_test_points(self):
+        lists = ['ph', 'mw', 'abuse', 'cr']
         self.assertTrue("test.surbl.org" in surbl)
         self.assertEquals(
             surbl.lookup("test.surbl.org"),
@@ -52,30 +54,29 @@ class TestSurblclient(unittest.TestCase):
         self.assertTrue("foo.bar.baz.test.multi.surbl.org" in surbl)
         self.assertEquals(
             surbl.lookup("foo.bar.baz.test.multi.surbl.org"),
-            ("multi.surbl.org", lists),
+            ("test.multi.surbl.org", lists),
         )
 
-    def testUriblPass(self):
-        domains = ("google.com", "yahoo.com", "apple.com")
-        for domain in domains:
-            self.assertFalse(domain in uribl)
-            self.assertFalse(uribl.lookup(domain))
+    # def test_uribl_pass(self):
+    #     domains = ("google.com", "yahoo.com", "apple.com")
+    #     for domain in domains:
+    #         self.assertFalse(domain in uribl)
+    #         self.assertFalse(uribl.lookup(domain))
 
-    def testUriblTestPoints(self):
-        self.assertTrue("test.uribl.com" in uribl)
-        self.assertTrue("foo.bar.baz.test.uribl.com" in uribl)
+    # def test_uribl_test_points(self):
+    #     self.assertTrue("test.uribl.com" in uribl)
+    #     self.assertTrue("foo.bar.baz.test.uribl.com" in uribl)
 
-    def testSpamhausPass(self):
-        domains = ("google.com", "yahoo.com", "apple.com")
-        for domain in domains:
-            self.assertFalse(domain in spamhausdbl)
-            self.assertFalse(uribl.lookup(domain))
+    # def test_spamhaus_pass(self):
+    #     domains = ("google.com", "yahoo.com", "apple.com")
+    #     for domain in domains:
+    #         self.assertFalse(domain in spamhausdbl)
+    #         self.assertFalse(uribl.lookup(domain))
 
-    def testSpamhausPoints(self):
-        self.assertTrue("dbltest.com" in spamhausdbl)
-        self.assertTrue("foo.bar.baz.dbltest.com" in spamhausdbl)
+    # def test_spamhaus_test_points(self):
+    #     self.assertTrue("dbltest.com" in spamhausdbl)
+    #     self.assertTrue("foo.bar.baz.dbltest.com" in spamhausdbl)
 
 
 if __name__ == '__main__':
-    from surblclient import surbl, uribl, spamhausdbl
     unittest.main()

@@ -11,4 +11,8 @@ setup(name="surblclient",
       author_email="filip.salomonsson@gmail.com",
       url="http://github.com/filipsalomonsson/surblclient",
       py_modules=["surblclient"],
+      install_requires=[
+        "importlib-resources",
+      ],
+      include_package_data=True,
       )

@@ -30,28 +30,28 @@ class TestSurblclientTestCase(unittest.TestCase):
     def test_surbl_pass(self):
         domains = ["google.com", "yahoo.com", "apple.com"]
         for domain in domains:
-            self.assertFalse(domain in surbl)
+            self.assertNotIn(domain, surbl)
             self.assertFalse(surbl.lookup(domain))
 
     def test_surbl_test_points(self):
         lists = ['ph', 'mw', 'abuse', 'cr']
-        self.assertTrue("test.surbl.org" in surbl)
+        self.assertIn("test.surbl.org", surbl)
         self.assertEquals(
             surbl.lookup("test.surbl.org"),
             ("test.surbl.org", lists),
         )
-        self.assertTrue("test.multi.surbl.org" in surbl)
+        self.assertIn("test.multi.surbl.org", surbl)
         self.assertEquals(
             surbl.lookup("test.multi.surbl.org"),
             ("test.multi.surbl.org", lists),
         )
 
-        self.assertTrue("foo.bar.baz.test.surbl.org" in surbl)
+        self.assertIn("foo.bar.baz.test.surbl.org", surbl)
         self.assertEquals(
             surbl.lookup("foo.bar.baz.test.surbl.org"),
             ("test.surbl.org", lists),
         )
-        self.assertTrue("foo.bar.baz.test.multi.surbl.org" in surbl)
+        self.assertIn("foo.bar.baz.test.multi.surbl.org", surbl)
         self.assertEquals(
             surbl.lookup("foo.bar.baz.test.multi.surbl.org"),
             ("test.multi.surbl.org", lists),

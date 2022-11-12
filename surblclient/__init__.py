@@ -36,6 +36,7 @@ test.surbl.org blacklisted in ['ph', 'mw', 'abuse', 'cr']
 
 from .blacklist import Blacklist
 from .surbl import SURBL
+
 # from .uribl import UriblBlacklist
 # from .spamhausdbl import SpamhausDBLBlacklist
 

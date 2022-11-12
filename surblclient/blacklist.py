@@ -23,6 +23,10 @@
 import socket
 
 
+def is_ip_address(domain):
+    return all(part.isdigit() for part in domain.split("."))
+
+
 class Blacklist:
     def __init__(self):
         self._cache = (None, None)
@@ -37,7 +41,10 @@ class Blacklist:
         cached_domain, flags = self._cache
         if cached_domain != domain:
             try:
-                ip = socket.gethostbyname(domain + "." + self.domain)
+                lookup_domain = domain
+                if is_ip_address(domain):
+                    lookup_domain = ".".join(reversed(domain.split(".")))
+                ip = socket.gethostbyname(lookup_domain + "." + self.domain)
                 flags = int(ip.split(".")[-1])
             except socket.gaierror as e:
                 if e.errno in (socket.EAI_NONAME, socket.EAI_NODATA):
@@ -67,13 +74,14 @@ class Blacklist:
         """
         # Remove userinfo
         if "@" in domain:
-            domain = domain[domain.index("@")+1:]
+            domain = domain[domain.index("@") + 1 :]
 
         # Remove port
         if ":" in domain:
-            domain = domain[:domain.index(":")]
+            domain = domain[: domain.index(":")]
 
-        domain = self.get_base_domain(domain)
+        if not is_ip_address(domain):
+            domain = self.get_base_domain(domain)
         return self._lookup_exact(domain)
 
     def __contains__(self, domain):

@@ -23,7 +23,7 @@
 
 import unittest
 
-from surblclient import surbl  #, uribl, spamhausdbl
+from surblclient import surbl  # , uribl, spamhausdbl
 
 
 class TestSurblclientTestCase(unittest.TestCase):
@@ -34,7 +34,7 @@ class TestSurblclientTestCase(unittest.TestCase):
             self.assertFalse(surbl.lookup(domain))
 
     def test_surbl_test_points(self):
-        lists = ['ph', 'mw', 'abuse', 'cr']
+        lists = ["ph", "mw", "abuse", "cr"]
         self.assertIn("test.surbl.org", surbl)
         self.assertEqual(
             surbl.lookup("test.surbl.org"),
@@ -57,6 +57,12 @@ class TestSurblclientTestCase(unittest.TestCase):
             ("test.multi.surbl.org", lists),
         )
 
+    def test_surbl_domain_is_ip(self):
+        self.assertTrue("127.0.0.2" in surbl)
+        result = surbl.lookup("127.0.0.2")
+        self.assertEqual(result[0], "127.0.0.2")
+        self.assertEqual(result[1], ["ph", "mw", "abuse", "cr"])
+
     # def test_uribl_pass(self):
     #     domains = ("google.com", "yahoo.com", "apple.com")
     #     for domain in domains:
@@ -78,5 +84,5 @@ class TestSurblclientTestCase(unittest.TestCase):
     #     self.assertTrue("foo.bar.baz.dbltest.com" in spamhausdbl)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

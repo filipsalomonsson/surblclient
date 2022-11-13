@@ -20,18 +20,27 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+"""Main class for the blacklists"""
+
 import socket
 
 
 def is_ip_address(domain):
+    """Return True if `domain` is an IP address"""
     return all(part.isdigit() for part in domain.split("."))
 
 
 class Blacklist:
+    """An RBL blacklist"""
+
+    domain = ""
+    flags = []
+
     def __init__(self):
         self._cache = (None, None)
 
     def get_base_domain(self, domain):
+        """Return the base domain to use for RBL lookup"""
         return domain
 
     def _lookup_exact(self, domain):
@@ -44,18 +53,17 @@ class Blacklist:
                 lookup_domain = domain
                 if is_ip_address(domain):
                     lookup_domain = ".".join(reversed(domain.split(".")))
-                ip = socket.gethostbyname(lookup_domain + "." + self.domain)
-                flags = int(ip.split(".")[-1])
-            except socket.gaierror as e:
-                if e.errno in (socket.EAI_NONAME, socket.EAI_NODATA):
+                ip_address = socket.gethostbyname(lookup_domain + "." + self.domain)
+                flags = int(ip_address.split(".")[-1])
+            except socket.gaierror as err:
+                if err.errno in (socket.EAI_NONAME, socket.EAI_NODATA):
                     # No record found
                     flags = None
                     self._cache = (domain, flags)
                     return False
-                else:
-                    # Unhandled error, pass test for now
-                    return None
-            except Exception:
+                # Unhandled error, pass test for now
+                return None
+            except OSError:
                 # Not sure if this can happen. Timeouts?
                 return None
             self._cache = (domain, flags)
@@ -64,8 +72,7 @@ class Blacklist:
                 # Blocked from making queries
                 return None
             return (domain, [s for (n, s) in self.flags if flags & n])
-        else:
-            return False
+        return False
 
     def lookup(self, domain):
         """Extract base domain and check it against SURBL.

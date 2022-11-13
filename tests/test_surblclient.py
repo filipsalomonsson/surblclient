@@ -36,23 +36,23 @@ class TestSurblclientTestCase(unittest.TestCase):
     def test_surbl_test_points(self):
         lists = ['ph', 'mw', 'abuse', 'cr']
         self.assertIn("test.surbl.org", surbl)
-        self.assertEquals(
+        self.assertEqual(
             surbl.lookup("test.surbl.org"),
             ("test.surbl.org", lists),
         )
         self.assertIn("test.multi.surbl.org", surbl)
-        self.assertEquals(
+        self.assertEqual(
             surbl.lookup("test.multi.surbl.org"),
             ("test.multi.surbl.org", lists),
         )
 
         self.assertIn("foo.bar.baz.test.surbl.org", surbl)
-        self.assertEquals(
+        self.assertEqual(
             surbl.lookup("foo.bar.baz.test.surbl.org"),
             ("test.surbl.org", lists),
         )
         self.assertIn("foo.bar.baz.test.multi.surbl.org", surbl)
-        self.assertEquals(
+        self.assertEqual(
             surbl.lookup("foo.bar.baz.test.multi.surbl.org"),
             ("test.multi.surbl.org", lists),
         )

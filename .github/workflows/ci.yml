@@ -69,4 +69,4 @@ jobs:
         # poetry run flake8 . --extend-exclude .venv --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
     - name: Test with pytest
-      run: poetry run pytest
+      run: poetry run pytest --cov=surblclient

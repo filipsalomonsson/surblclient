@@ -25,7 +25,7 @@ from __future__ import print_function
 import socket
 import re
 
-import importlib_resources
+import importlib.resources
 
 from .blacklist import Blacklist
 
@@ -33,7 +33,7 @@ _test_domains = {"surbl.org", "multi.surbl.org"}
 
 
 def domains_from_resource(filename):
-    files = importlib_resources.files("surblclient")
+    files = importlib.resources.files("surblclient")
     resource = files / "data" / "surbl" / filename
     return set(resource.read_text().split())
 

@@ -21,14 +21,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import unittest
-
-import mock
+from unittest import TestCase, mock
 
 from surblclient import surbl  # , uribl, spamhausdbl
 
 
-class TestSurblclientTestCase(unittest.TestCase):
+class TestSurblclientTestCase(TestCase):
     def test_surbl_pass(self):
         domains = ["google.com", "yahoo.com", "apple.com"]
         for domain in domains:

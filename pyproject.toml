@@ -8,7 +8,7 @@ readme = "README.md"
 repository = "http://github.com/filipsalomonsson/surblclient"
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.7.2"
 
 
 [tool.poetry.group.test.dependencies]
@@ -16,7 +16,7 @@ pytest = "^7.2.0"
 
 
 [tool.poetry.group.dev.dependencies]
-flake8 = "^5.0.4"
+pylint = "^2.15.5"
 
 [build-system]
 requires = ["poetry-core"]

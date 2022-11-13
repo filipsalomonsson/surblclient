@@ -20,6 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+"""SURBL multi blocklist"""
 from __future__ import print_function
 
 import importlib.resources
@@ -30,12 +31,15 @@ _test_domains = {"surbl.org", "multi.surbl.org"}
 
 
 def domains_from_resource(filename):
+    """Return the domains listen in a data resource file"""
     files = importlib.resources.files("surblclient")
     resource = files / "data" / "surbl" / filename
     return set(resource.read_text().split())
 
 
 class SURBL(Blacklist):
+    """Client for the multi.surbl.org"""
+
     domain = "multi.surbl.org."
     flags = [(8, "ph"), (16, "mw"), (64, "abuse"), (128, "cr")]
 

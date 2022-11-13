@@ -1,0 +1,71 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+
+name: CI
+
+on: [push]
+#   push:
+#     branches: [ "main" ]
+#   pull_request:
+#     branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: ["3,7", "3.8", "3.9", "3.10"]
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install Poetry Action
+      # You may pin to the exact commit or the version.
+      uses: snok/install-poetry@d45b6d76012debf457ab49dffc7fb7b2efe8071d
+#       uses: snok/install-poetry@v1.3.3
+      with:
+        # The Poetry version to install
+        version: 1.2.2  # default is latest
+        # Whether Poetry should create a virtualenv or not
+        # virtualenvs-create: # optional, default is true
+        # Whether Poetry should create virtualenvs in the project directory or not
+        virtualenvs-in-project: true  # optional, default is false
+        # The Poetry virtualenv path
+        # virtualenvs-path: # optional, default is {cache-dir}/virtualenvs
+        # Whether to install many packages at once or one by one. This can fix PyPI DNS resolution errors, but also slows down the installation
+        # installer-parallel: # optional, default is true
+        # Arguments passed directly to the Poetry installation script. For example --force.
+        # installation-arguments: # optional
+
+    # Install dependencies. `--no-root` means "install all dependencies but not the project
+    # itself", which is what you want to avoid caching _your_ code. The `if` statement
+    # ensures this only runs on a cache miss.
+    - name: Install dependencies
+      run: poetry install --no-interaction --no-root
+#       if: steps.cache-deps.outputs.cache-hit != 'true'
+
+    # Now install _your_ project. This isn't necessary for many types of projects -- particularly
+    # things like Django apps don't need this. But it's a good idea since it fully-exercises the
+    # pyproject.toml and makes that if you add things like console-scripts at some point that
+    # they'll be installed and working.
+    - name: Install project
+      run: poetry install --no-interaction
+
+    - name: Lint with flake8
+      run: |
+        # stop the build if there are Python syntax errors or undefined names
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+    - name: Test with pytest
+      run: poetry run pytest

@@ -27,13 +27,17 @@ from surblclient import surbl  # , uribl, spamhausdbl
 
 
 class TestSurblclientTestCase(TestCase):
+    """General tests for the surbl blocklist"""
+
     def test_surbl_pass(self):
+        """Domains that are not listed"""
         domains = ["google.com", "yahoo.com", "apple.com"]
         for domain in domains:
             self.assertNotIn(domain, surbl)
             self.assertFalse(surbl.lookup(domain))
 
     def test_surbl_test_points(self):
+        """Known listed test domains"""
         lists = ["ph", "mw", "abuse", "cr"]
         self.assertIn("test.surbl.org", surbl)
         self.assertEqual(
@@ -58,12 +62,14 @@ class TestSurblclientTestCase(TestCase):
         )
 
     def test_surbl_domain_is_ip(self):
+        """IP address lookup"""
         self.assertTrue("127.0.0.2" in surbl)
         result = surbl.lookup("127.0.0.2")
         self.assertEqual(result[0], "127.0.0.2")
         self.assertEqual(result[1], ["ph", "mw", "abuse", "cr"])
 
     def test_client_blocked(self):
+        """Error bit set in response"""
         with mock.patch("socket.gethostbyname", return_value="127.0.0.1"):
             self.assertNotIn("somedomain.tld", surbl)
             result = surbl.lookup("somedomain.tld")

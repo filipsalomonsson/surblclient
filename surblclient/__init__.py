@@ -34,7 +34,7 @@ test.surbl.org blacklisted in ['ph', 'mw', 'abuse', 'cr']
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from .blacklist import Blacklist
+from .blacklist import Blacklist  # noqa: F401
 from .surbl import SURBL
 
 # from .uribl import UriblBlacklist

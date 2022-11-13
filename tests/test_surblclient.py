@@ -88,7 +88,3 @@ class TestSurblclientTestCase(TestCase):
     # def test_spamhaus_test_points(self):
     #     self.assertTrue("dbltest.com" in spamhausdbl)
     #     self.assertTrue("foo.bar.baz.dbltest.com" in spamhausdbl)
-
-
-if __name__ == "__main__":
-    unittest.main()

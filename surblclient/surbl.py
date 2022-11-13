@@ -22,9 +22,6 @@
 
 from __future__ import print_function
 
-import socket
-import re
-
 import importlib.resources
 
 from .blacklist import Blacklist

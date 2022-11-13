@@ -32,9 +32,7 @@ _test_domains = {"surbl.org", "multi.surbl.org"}
 
 def domains_from_resource(filename):
     """Return the domains listen in a data resource file"""
-    files = importlib.resources.files("surblclient")
-    resource = files / "data" / "surbl" / filename
-    return set(resource.read_text().split())
+    return set(importlib.resources.read_text(__package__, filename).split())
 
 
 class SURBL(Blacklist):
@@ -44,8 +42,8 @@ class SURBL(Blacklist):
     flags = [(8, "ph"), (16, "mw"), (64, "abuse"), (128, "cr")]
 
     _pseudo_tlds = (
-        domains_from_resource("two-level-tlds")
-        | domains_from_resource("three-level-tlds")
+        domains_from_resource("surbl-two-level-tlds")
+        | domains_from_resource("surbl-three-level-tlds")
         | _test_domains
     )
 

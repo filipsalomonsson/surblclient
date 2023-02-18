@@ -32,7 +32,9 @@ _test_domains = {"surbl.org", "multi.surbl.org"}
 
 def domains_from_resource(filename):
     """Return the domains listen in a data resource file"""
-    return set(importlib.resources.read_text(__package__, filename).split())
+    resource_file = importlib.resources.files(__package__) / filename
+    with resource_file.open("r", encoding="utf-8", errors="strict") as resource_fp:
+        return set(resource_fp.read().split())
 
 
 class SURBL(Blacklist):

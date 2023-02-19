@@ -26,7 +26,7 @@ import importlib.resources
 from .blacklist import Blacklist
 
 
-def domains_from_resource(filename):
+def domains_from_resource(filename: str) -> set:
     """Return the domains listen in a data resource file"""
     resource_file = importlib.resources.files(__package__) / filename
     with resource_file.open("r", encoding="utf-8", errors="strict") as resource_fp:
@@ -40,7 +40,7 @@ class SURBL(Blacklist):
     test_domains = {"surbl.org", "multi.surbl.org"}
     flags = [(8, "ph"), (16, "mw"), (64, "abuse"), (128, "cr")]
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self._pseudo_tlds = (
             domains_from_resource("surbl-two-level-tlds")
@@ -48,7 +48,7 @@ class SURBL(Blacklist):
             | self.test_domains
         )
 
-    def get_base_domain(self, domain):
+    def get_base_domain(self, domain: str) -> str:
         while domain.count(".") > 1:
             _, _, rest = domain.partition(".")
             if rest in self._pseudo_tlds:

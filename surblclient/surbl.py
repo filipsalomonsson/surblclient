@@ -21,13 +21,9 @@
 # THE SOFTWARE.
 
 """SURBL multi blocklist"""
-from __future__ import print_function
-
 import importlib.resources
 
 from .blacklist import Blacklist
-
-_test_domains = {"surbl.org", "multi.surbl.org"}
 
 
 def domains_from_resource(filename):
@@ -38,16 +34,19 @@ def domains_from_resource(filename):
 
 
 class SURBL(Blacklist):
-    """Client for the multi.surbl.org"""
+    """Client for the multi.surbl.org blocklist"""
 
     domain = "multi.surbl.org."
+    test_domains = {"surbl.org", "multi.surbl.org"}
     flags = [(8, "ph"), (16, "mw"), (64, "abuse"), (128, "cr")]
 
-    _pseudo_tlds = (
-        domains_from_resource("surbl-two-level-tlds")
-        | domains_from_resource("surbl-three-level-tlds")
-        | _test_domains
-    )
+    def __init__(self):
+        super().__init__()
+        self._pseudo_tlds = (
+            domains_from_resource("surbl-two-level-tlds")
+            | domains_from_resource("surbl-three-level-tlds")
+            | self.test_domains
+        )
 
     def get_base_domain(self, domain):
         while domain.count(".") > 1:
